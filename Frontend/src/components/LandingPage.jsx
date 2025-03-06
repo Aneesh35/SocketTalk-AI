@@ -1,9 +1,9 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Hero from './Hero';
-import Features from './Features';
-import Technologies from './Technolgies';
-import Footer from './Footer';
+import Navbar from '../components/LandingPageComp/Navbar';
+import Hero from '../components/LandingPageComp/Hero';
+import Features from '../components/LandingPageComp/Features';
+import Technologies from '../components/LandingPageComp/Technolgies';
+import Footer from '../components/LandingPageComp/Footer';
 
 const LandingPage = () => {
   return (

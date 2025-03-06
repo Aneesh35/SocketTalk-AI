@@ -1,6 +1,6 @@
 import React from 'react';
 import { ZapIcon, BotIcon, DatabaseIcon, ShieldIcon } from 'lucide-react';
-import FeatureCard from '../components/FeatureCard';
+import FeatureCard from './FeatureCard';
 
 const Features = () => {
   const featuresData = [

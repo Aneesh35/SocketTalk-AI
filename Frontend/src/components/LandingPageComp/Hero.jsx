@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRightIcon, BotIcon } from 'lucide-react';
-import ChatPreview from '../components/ChatPreview';
+import ChatPreview from './ChatPreview';
 
 const Hero = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { CodeIcon, ZapIcon, BotIcon } from 'lucide-react';
-import TechCard from '../components/TechCard';
+import TechCard from './TechCard';
 
 const Technologies = () => {
   const techData = [

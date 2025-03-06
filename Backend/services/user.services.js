@@ -11,3 +11,17 @@ export const CreateUser = async ({ email, password }) => {
     })
     return user;
 }
+
+export const getAllUsers = async ({ userId }) => {
+    try {
+        const allUser = await userModel.find({
+            _id: {
+                $ne: userId
+            }
+        });
+        return allUser;
+    }
+    catch (error) {
+        throw new Error(error.msg);
+    }
+}
