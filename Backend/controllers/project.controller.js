@@ -18,9 +18,9 @@ export const createProjectController = async (req, res) => {
     }
 }
 
-export const getAllProjectController = async () => {
+export const getAllProjectController = async (req,res) => {
     try {
-        const loggedInUser = await userModel.findOne({
+        const loggedInUser = await user.findOne({
             email: req.user.email
         })
         const allUserProjects = await getAllProjectByUserId({ userId: loggedInUser._id })
