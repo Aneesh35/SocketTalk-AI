@@ -15,6 +15,7 @@ const Login = () => {
       if (response) {
         localStorage.setItem("token", response.data.token);
         setUser(response.data.user);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         Navigate("/home");
       }
     } catch (e) {
