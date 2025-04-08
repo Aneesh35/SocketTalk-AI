@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import user from "../models/user.model.js";
-import { createProject, getAllProjectByUserId, addUsersToProject ,getProjectDataById } from "../services/project.service.js";
+import { createProject, getAllProjectByUserId, addUsersToProject, getProjectDataById, updateFileTree } from "../services/project.service.js";
 
 export const createProjectController = async (req, res) => {
     const errors = validationResult(req);
@@ -18,7 +18,7 @@ export const createProjectController = async (req, res) => {
     }
 }
 
-export const getAllProjectController = async (req,res) => {
+export const getAllProjectController = async (req, res) => {
     try {
         const loggedInUser = await user.findOne({
             email: req.user.email
@@ -60,8 +60,27 @@ export const getProjectById = async (req, res) => {
     const { projectId } = req.params;
     try {
         const project = await getProjectDataById({ projectId });
-        return res.status(200).json({project})
+        return res.status(200).json({ project })
     } catch (err) {
+        res.status(400).json({ error: err.message })
+    }
+}
+export const updateFileTreeController = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+        const { projectId, fileTree } = req.body;
+        const project = await updateFileTree({
+            projectId,
+            fileTree
+        })
+        return res.status(200).json({
+            project
+        })
+    } catch (err) {
+        console.log(err)
         res.status(400).json({ error: err.message })
     }
 }

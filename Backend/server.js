@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 const port = process.env.port || 3000;
 import { DataBase_connect } from './db/connection.js';
 import mongoose from 'mongoose';
+import { generateResult } from './services/ai.service.js';
 import project from './models/project.model.js';
 import user from './models/user.model.js';
 
@@ -54,15 +55,28 @@ io.on('connection', socket => {
   socket.join(socket.roomId);
 
   socket.on('project-message', async (data) => {
+
     try {
-      console.log(data.sender);
+
+      const message = data.message;
+      const aiIsPresentInMessage = message.includes('@ai');
       const sentBy = await user.findById(data.sender);
       data.sender = sentBy.email;
+      socket.broadcast.to(socket.roomId).emit('project-message', data);
+
+      if (aiIsPresentInMessage) {
+        const prompt = message.replace('ai', '');
+        const response = await generateResult(prompt);
+        io.to(socket.roomId).emit('project-message', {
+          sender: 'AI',
+          message: response,
+        })
+        return;
+      }
     }
     catch (error) {
       console.log(error)
     }
-    socket.broadcast.to(socket.roomId).emit('project-message', data);
   })
 
   socket.on('event', data => { /* … */ });
@@ -70,7 +84,7 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log("user disconnected");
     socket.leave(socket.roomId)
-   });
+  });
 });
 
 server.listen(port, () => {

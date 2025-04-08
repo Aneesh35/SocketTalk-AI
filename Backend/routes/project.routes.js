@@ -1,4 +1,4 @@
-import { createProjectController, getAllProjectController, addUserController, getProjectById } from "../controllers/project.controller.js";
+import { createProjectController, getAllProjectController, addUserController, getProjectById, updateFileTreeController } from "../controllers/project.controller.js";
 import Router from 'express'
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { body } from 'express-validator';
@@ -16,7 +16,11 @@ projectRouter.put('/add-user', authMiddleware,
     body('users').isArray({ min: 1 }).withMessage('Users must be an array of strings').bail()
         .custom((users) => users.every(user => typeof user === 'string')).withMessage('Each user must be a string'),
     addUserController);
-    
+
 projectRouter.get('/get-project/:projectId', authMiddleware, getProjectById)
 
+projectRouter.put('/update-file-tree', authMiddleware,
+    body('projectId').isString().withMessage('Project ID is required'),
+    body('fileTree').isObject().withMessage('File tree is required'),
+    updateFileTreeController);
 export default projectRouter;
